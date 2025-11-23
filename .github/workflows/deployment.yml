@@ -9,39 +9,45 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Récupérer le code
+      - name: Récupération du dépôt
         uses: actions/checkout@v4
 
-      - name: Installer Node.js
+      - name: Installation de Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: Installer les dépendances
+      - name: Installation des dépendances
         run: npm ci
 
-      - name: Exécuter les tests
+      - name: Exécution des tests
         run: npm test
 
   deploy:
+    needs: test
     runs-on: ubuntu-latest
-
     steps:
-      - name: Récupérer le code
+      - name: Récupération du dépôt
         uses: actions/checkout@v4
 
-      - name: Installer Node.js
+      - name: Installation de Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: Installer les dépendances
+      - name: Installation des dépendances
         run: npm ci
 
-      - name: Construire le projet
+      - name: Construction du projet
         run: npm run build
 
       - name: Déploiement simulé
-        run: echo "Déploiement simulé terminé ..."
+        run: echo "Déploiement simulé terminé !"
+
+  notify:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notification équipe
+        run: echo "Déploiement terminé — notification envoyée à l’équipe !"
